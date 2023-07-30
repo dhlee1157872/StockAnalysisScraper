@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 load_dotenv('.env')
 import json
 
+#function to get stock data
 def get_stock_data(tag):
     r = requests.get('https://finance.yahoo.com/quote/{tag}'.format(tag = tag),headers = headers)
     soup = BeautifulSoup(r.content, 'html.parser')
@@ -32,6 +33,7 @@ def get_stock_data(tag):
 
 headerdata = os.getenv('HEADERS')
 
+#stock class
 class stock:
     def __init__(self, tag, name, PE):
         self.tag = tag
@@ -48,10 +50,22 @@ class stock:
             f.close()
         
 
+#this resets the json file so that the updated data can be readded
+with open('stockdata.json') as f:
+    tmp = json.load(f)
+    f.close()
+
+tmp['stock_info'].clear()
+
+with open('stockdata.json', 'w') as f:
+    f.write(json.dumps(tmp, indent = 2))
+    f.close()
+
 headers = {'User-Agent': headerdata}
 
 stocktags = []
 
+#runs through the screener and gets all the stocks
 offset = 0
 while(True):
     r = requests.get('https://finance.yahoo.com/screener/predefined/undervalued_large_caps?count=25&offset={number}'.format(number = offset),headers = headers)
@@ -62,12 +76,14 @@ while(True):
         break    
     stocktags = stocktags + stag
 
+#gets the stock information
 stocks = []    
 iteration = 0
 for x in stocktags:
         get_stock_data(stocktags[iteration].text)
         iteration+=1
 
+#saves the stock data to json file
 for x in stocks:
     print(x.name + ' (' + x.tag + ')  PE: ' + x.PE)
     x.save_to_json('stockdata.json')
