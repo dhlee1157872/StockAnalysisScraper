@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<title>stock analysis</title>
 <html>
     <head>
         <title>
@@ -8,7 +9,7 @@
     <body>
         <h1>Stocks!!!!</h1>
         {% for stock in posts %}
-            <p>({{stock.Tag}}) {{stock.Name}} || PE : {{stock.PE}}</p>
+            <p>({{stock.Tag}}) {{stock.Name}} || PE : {{'%0.2f%'|format(stock.PE|float)}}</p>
         {% endfor %}
     </body>
 </html>

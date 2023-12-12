@@ -1,2 +1,5 @@
 .env
 stockdata.json
+__pycache__/
+*.pyc
+*.pyo
