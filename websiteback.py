@@ -8,11 +8,13 @@ app = Flask(__name__)
 with open('stockdata.json') as f:
     stockdata = json.load(f)
     f.close()
+
+stockdata = stockdata["stock_info"]
 mergeSort(stockdata, 0, len(stockdata)-1)
 
 @app.route("/")
 def primary():
-    return render_template('primary.html', posts = stockdata)
+    return render_template('primary.html', stocks = stockdata)
 
 #sorting/better page??? buttons
 

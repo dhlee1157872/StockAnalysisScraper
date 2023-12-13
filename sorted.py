@@ -17,8 +17,8 @@ def merge(arr, left, mid, right):
     j = 0
     k = left
 
-    while i < size1 and j > size2:
-        if float(L[i].PE) <= float(R[j].PE):
+    while i < size1 and j < size2:
+        if float(L[i]['PE']) <= float(R[j]['PE']):
             arr[k] = L[i]
             i+=1
         else:
@@ -39,7 +39,7 @@ def merge(arr, left, mid, right):
 def mergeSort(arr,left, right):
     if left < right:
 
-        mid = left+(right-1)//2
+        mid = (left+(right-1))//2
 
         mergeSort(arr, left ,mid)
         mergeSort(arr, mid+1, right)
