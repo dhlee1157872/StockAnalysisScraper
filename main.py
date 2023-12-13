@@ -42,7 +42,7 @@ class stock:
     def save_to_json(self, filename):
         if self.PE == 'N/A' or self.PE == None:
             self.PE = 100
-        dict = {'Tag': self.tag, 'Name': self.name, 'PE': float(self.PE) }
+        dict = {'Tag': self.tag, 'Name': self.name, 'PE': self.PE }
         with open(filename) as f:
             tmp = json.load(f)
             f.close()
