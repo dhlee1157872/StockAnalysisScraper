@@ -10,17 +10,19 @@ with open('stockdata.json') as f:
     f.close()
 
 stockdata = stockdata["stock_info"]
-mergeSort(stockdata, 0, len(stockdata)-1)
+
 
 @app.route("/")
 def primary():
+    mergeSort(stockdata, 0, len(stockdata)-1, 'PE')
     return render_template('primary.html', stocks = stockdata)
 
 #sorting/better page??? buttons
 
 @app.route("/test")
 def test():
-    return render_template('test.html')
+    mergeSort(stockdata, 0, len(stockdata)-1, 'Price')
+    return render_template('primary.html', stocks = stockdata)
 
 
 if __name__ == "__main__":

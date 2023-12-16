@@ -18,15 +18,21 @@ def get_stock_data(tag):
 
     sname = soup.find_all('h1', {'class' : 'D(ib) Fz(18px)'})
     sdata = soup.find_all('td', {'class' : 'Ta(end) Fw(600) Lh(14px)'})
+    sprice = soup.find_all('fin-streamer', {'class' : 'Fw(b) Fz(36px) Mb(-4px) D(ib)'})
     if(len(sdata) != 0):     
         PE = sdata[10].text #this gets the value of PE ratio
+
+        #gets current stock price
+        stockprice = sprice[0].text.split(',')
+        stockprice = "".join(stockprice)
+
 
         #cleaning the name and tag
         stockandtag = sname[0].text.split('(')
         stockandtag[0] = stockandtag[0][0:len(stockandtag[0])-1]
         stockandtag[1] = stockandtag[1][0:len(stockandtag[1])-1]
 
-        stocks.append(stock(stockandtag[1],stockandtag[0],PE))
+        stocks.append(stock(stockandtag[1],stockandtag[0],PE, stockprice))
         print(stocks[len(stocks)-1].name)
     else:
         print('fail: ' +  stocks[len(stocks)-1].name)
@@ -35,14 +41,16 @@ headerdata = os.getenv('HEADERS')
 
 #stock class
 class stock:
-    def __init__(self, tag, name, PE):
+    def __init__(self, tag, name, PE, price):
         self.tag = tag
         self.name = name
         self.PE = PE
+        self.price = price
     def save_to_json(self, filename):
+        #placeholder in for error checking for PE
         if self.PE == 'N/A' or self.PE == None:
             self.PE = 100
-        dict = {'Tag': self.tag, 'Name': self.name, 'PE': self.PE }
+        dict = {'Tag': self.tag, 'Name': self.name, 'PE': self.PE, 'Price': self.price}
         with open(filename) as f:
             tmp = json.load(f)
             f.close()
@@ -87,5 +95,5 @@ for x in stocktags:
 
 #saves the stock data to json file
 for x in stocks:
-    print(x.name + ' (' + x.tag + ')  PE: ' + x.PE)
+    print(x.name + ' (' + x.tag + ')  PE: ' + x.PE + '  Price: ' + x.price)
     x.save_to_json('stockdata.json')

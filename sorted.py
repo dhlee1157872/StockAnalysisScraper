@@ -1,6 +1,6 @@
 #this is to sort the stocks for html as the scraping puts the PE values as string
 
-def merge(arr, left, mid, right):
+def merge(arr, left, mid, right, string):
     size1 = mid - left +1
     size2 = right - mid
 
@@ -18,7 +18,7 @@ def merge(arr, left, mid, right):
     k = left
 
     while i < size1 and j < size2:
-        if float(L[i]['PE']) <= float(R[j]['PE']):
+        if float(L[i][string]) <= float(R[j][string]):
             arr[k] = L[i]
             i+=1
         else:
@@ -36,11 +36,11 @@ def merge(arr, left, mid, right):
         j+=1
         k +=1
     
-def mergeSort(arr,left, right):
+def mergeSort(arr,left, right, string):
     if left < right:
 
         mid = (left+(right-1))//2
 
-        mergeSort(arr, left ,mid)
-        mergeSort(arr, mid+1, right)
-        merge(arr, left, mid, right)
+        mergeSort(arr, left ,mid, string)
+        mergeSort(arr, mid+1, right, string)
+        merge(arr, left, mid, right, string)
